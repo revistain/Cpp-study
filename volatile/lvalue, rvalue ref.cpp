@@ -1,14 +1,14 @@
 //#include <iostream>
 //
-//class A {
+//class a {
 //	int _data;
 //
 //public:
-//	A(int data) : _data(data) {
+//	a(int data) : _data(data) {
 //		std::cout << "일반 생성자 호출 ! " << std::endl;
 //	}
 //
-//	A(const A& a) : _data(a._data) {
+//	a(const a& a) : _data(a._data) {
 //		std::cout << "복사 생성자 호출 ! " << std::endl;
 //	}
 //};
@@ -18,12 +18,12 @@
 //}
 //
 //int main() {
-//	A a(1);
-//	A b(a);
+//	a a(1);
+//	a b(a);
 //
 //	// copy elision
 //	// 컴파일러가 똑똑하게 복사 생략
-//	A c(A(2));
+//	a c(a(2));
 //
 //
 //	// lvalue(&를 취할수 있는)은 좌우 모두 가능
@@ -32,10 +32,10 @@
 //
 //
 //	// 분명 foo는 lvalue reference를 받는 함수인데
-//	// rvalue인 "Hello world"가 들어갔는데도 정상작동
-//	// => 예외적으로 const T&은 우측값도 레퍼런스로 받는다
+//	// rvalue인 "hello world"가 들어갔는데도 정상작동
+//	// => 예외적으로 const t&은 우측값도 레퍼런스로 받는다
 //	//	  const 레퍼런스이기 떄문에 임시 객체를 read만 하기에 ㄱㅊ
-//	std::string str = foo("Hello world");
+//	std::string str = foo("hello world");
 //	std::cout << str << std::endl;
 //
 //
