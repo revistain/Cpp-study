@@ -145,6 +145,7 @@
     <ClCompile Include="stlErase, lambda.cpp" />
     <ClCompile Include="lvalue, rvalue ref.cpp" />
     <ClCompile Include="stdMove.cpp" />
+    <ClCompile Include="stdFoward.cpp" />
     <ClCompile Include="소스.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

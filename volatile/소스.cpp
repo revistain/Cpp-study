@@ -1,49 +1,67 @@
 #include <iostream>
 #include <vector>
 
-//template <typename T>
-//void wrapper(const T& u) {
-//	g(u);
-//}
-//template <typename T>
-//void wrapper(T& u) {
-//	g(u);
-//}
+// 메모리가 구조적으로 누수가 생기는 경우
+// 예외처리로 인한 누수
+// 디자인패턴 => Resource Acquisition is Initialization(RAII)
 
-template <typename T>
-void wrapper(T&& u) {
-	// std::forward는 u가 rvalue일때만 move해줌
-	g(std::forward<T>(u));
+class A {
+	int* data;
+
+public:
+	// 이 생성자 호출시 컴파일 에러
+	A(std::string str) = delete;
+
+	A() {
+		std::cout << "자원을 획득함!" << std::endl;
+		data = new int[100];
+	}
+
+	~A() {
+		std::cout << "자원을 해제함!" << std::endl;
+		delete[] data;
+	}
+
+	void some() { std::cout << "맴버함수 호출!" << std::endl; }
+};
+
+void wrong_something(std::unique_ptr<A>& ptr) {
+	std::cout << "wrong : ";
+	ptr->some();
 }
 
-class A {};
+void correct_something(A* ptr) {
+	std::cout << "correct : ";
+	ptr->some();
+}
 
-void g(A& a) { std::cout << "lvalue ref호출!" << std::endl; }
-void g(const A& a) { std::cout << "lvalue ref const호출" << std::endl; }
-void g(A&& a) { std::cout << "rvalue ref호출!" << std::endl; }
+void do_something() {
+	// 포인터가 소멸될때 소멸자가 호출됨
+	std::unique_ptr<A> pa(new A());
+	pa->some();
+
+	// std::unique_ptr<A> pb = pa;	// 복사 생성자 불가능
+
+	// 소유권 이전(이동 생성자)
+	std::unique_ptr<A> pc = std::move(pa);
+	wrong_something(pc); // 에러는 아니지만 한 대상에 대한 여러 별명 존재
+	correct_something(pc.get()); // get은 unique_ptr의 실제주소 리턴
+}
+
 
 int main() {
-	A a;
-	const A ca;
+	do_something();
 
-	std::cout << "원본 -------------" << std::endl;
-	g(a);
-	g(ca);
-	g(A());
+	// 간편한 방법
+	auto ptr = std::make_unique<A>();
 
-	std::cout << "wrapper -------------" << std::endl;
-	wrapper(a);
-	wrapper(ca);
-	wrapper(A()); // const T&로 들어감
+	// unique_ptr를 이용한 vec사용
+	std::vector<std::unique_ptr<A>> vec;
 
-	// universial reference
-	// 1.
-	auto&& b = a;	// a는 lvalue이므로 b는 lvalue ref
+	// vec.push_back(ptr); // ERROR
+	vec.push_back(std::move(ptr));
 
-	// 2.
-	// 템플릿에서의 사용(타입 추론이 필요한 경우에만, const 붙이면 안됨)
-	// &  &  => &
-	// && &  => &
-	// &  && => &
-	// && && => &&
+	// 좀더 효율적인 생성
+	vec.emplace_back(new A());
 }
+
