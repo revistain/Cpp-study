@@ -139,10 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="stlSort기초.cpp" />
-    <ClCompile Include="stlSort로 객체 정렬.cpp" />
-    <ClCompile Include="stlRemoveIf.cpp" />
-    <ClCompile Include="stlErase, lambda.cpp" />
+    <ClCompile Include="stdErase, lambda.cpp" />
+    <ClCompile Include="stdRemoveIf.cpp" />
+    <ClCompile Include="stdSort기초.cpp" />
+    <ClCompile Include="stdSort로 객체 정렬.cpp" />
     <ClCompile Include="lvalue, rvalue ref.cpp" />
     <ClCompile Include="stdMove.cpp" />
     <ClCompile Include="stdFoward.cpp" />
